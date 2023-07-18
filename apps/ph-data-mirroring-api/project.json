@@ -1,0 +1,64 @@
+{
+  "name": "ph-data-mirroring-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/ph-data-mirroring-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/ph-data-mirroring-api",
+        "main": "apps/ph-data-mirroring-api/src/main.ts",
+        "tsConfig": "apps/ph-data-mirroring-api/tsconfig.app.json",
+        "assets": ["apps/ph-data-mirroring-api/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/ph-data-mirroring-api/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "ph-data-mirroring-api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ph-data-mirroring-api:build:development"
+        },
+        "production": {
+          "buildTarget": "ph-data-mirroring-api:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/ph-data-mirroring-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/ph-data-mirroring-api/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

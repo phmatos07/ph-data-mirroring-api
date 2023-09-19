@@ -2,11 +2,13 @@
   "name": "@ph-data-mirroring-api/source",
   "version": "0.0.0",
   "license": "MIT",
+  "author": "Phelipe Matos (PHMATOS07)",
+  "description": "Data Mirroring é um projeto com tecnologia de espelhamento de dados em 2 terminais, ou seja, tenho um celular e quero espelhar os dados em um monitor/tela, Data Mirroring é a aplicação que irar possibilitar isso.",
   "private": true,
   "scripts": {
     "start": "nx serve ph-data-mirroring-api",
     "test": "nx test ph-data-mirroring-api",
-    "build": "nx build  ph-data-mirroring-api"
+    "build": "nx build ph-data-mirroring-api"
   },
   "dependencies": {
     "axios": "^1.0.0",

@@ -1,7 +1,9 @@
+import { Injectable } from "@nestjs/common";
 import { Error0001, Error0002 } from "src/models/error-object.const";
 import { ErrorObject } from "../models/error-object";
 import { UserDTO } from "../models/user.dto";
 
+@Injectable()
 export class UserService {
 
   private users = new Array<UserDTO>();

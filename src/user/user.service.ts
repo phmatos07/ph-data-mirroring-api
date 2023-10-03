@@ -21,6 +21,10 @@ export class UserService {
     return Error0002;
   }
 
+  async checkEmailExists(email: string): Promise<boolean> {
+    return this.users.find(user => user.email === email) !== undefined;
+  }
+
   consultAll(): UserDTO[] {
     return this.users;
   }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ErrorObject } from './../models/error-object';
 import { UserDTO } from "./dto/user.dto";
 import { UserService } from "./user.service";
@@ -15,13 +15,13 @@ export class UserController {
     return this.service.create(request);
   }
 
-  @Get('')
-  consult(@Query('email') request: string): UserDTO | ErrorObject {
-    return this.service.consult(request);
+  @Get('/:id')
+  consult(@Param('id') id: string): UserDTO | ErrorObject {
+    return this.service.consult(id);
   }
 
-  @Get('/consultar-todos')
-  consultAll(): UserDTO[] {
+  @Get('')
+  consultAll() {
     return this.service.consultAll();
   }
 }

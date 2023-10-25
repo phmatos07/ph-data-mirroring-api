@@ -1,4 +1,4 @@
-import { UserEntity } from "./models/user.entity";
+import { UserEntity } from "../models/user.entity";
 
 export class UserBuilder {
 
@@ -24,7 +24,6 @@ export class UserBuilder {
 
   upadateEmail(email: string): this {
     this.user = { ...this.user, email };
-
     return this;
   }
 

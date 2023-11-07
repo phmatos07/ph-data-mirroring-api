@@ -1,10 +1,13 @@
 import { Injectable } from "@nestjs/common";
+import { CODE_001, CODE_002, CODE_003 } from "src/models/all-codes.const";
 import { ZERO } from "src/models/default-values.const";
 import { v4 as uuid } from "uuid";
-import { Error0001, Error0002, ErrorObject } from './../models/error-object';
+import { ApiError } from "../models/api-error";
+import { ApiSuccess } from "../models/api-success";
 import { UserBuilder } from "./builder/user.builder";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UpdateUserDTO } from "./dto/update-user.dto";
+import { DELETED_USER, REGISTRATION_MADE, UNREGISTERED_USER, UPDATED_USER } from "./models/api-messages.const";
 import { UserEntity } from "./models/user.entity";
 
 @Injectable()
@@ -12,22 +15,22 @@ export class UserService {
 
   private users = new Array<UserEntity>();
 
-  create(user: CreateUserDTO): ErrorObject {
+  async create(user: CreateUserDTO): Promise<ApiSuccess> {
     const userEntity = new UserBuilder(user).upadateId(uuid()).user;
     this.users.push(userEntity);
-    return Error0001;
+    return new ApiSuccess(userEntity.id, REGISTRATION_MADE);
   }
 
-  consult(email: string): UserEntity | ErrorObject {
+  async consult(email: string): Promise<UserEntity | ApiError> {
     const index = this.consulIndex(email);
 
     if (index >= ZERO) {
       return this.users[index];
     }
-    return Error0002;
+    return new ApiError(CODE_001, UNREGISTERED_USER);
   }
 
-  update(id: string, user: UpdateUserDTO) {
+  async update(id: string, user: UpdateUserDTO): Promise<ApiSuccess | ApiError> {
 
     const index = this.consulIndex(id);
     const _user = new UserBuilder(user).user;
@@ -37,22 +40,23 @@ export class UserService {
         if (key === 'id') return;
         this.users[index][key as keyof UserEntity] = _user[key as keyof UserEntity];
       });
-      return this.users;
+      return new ApiSuccess(id, UPDATED_USER);
     }
-    return Error0002;
+    return new ApiError(CODE_002, UNREGISTERED_USER);
   }
 
-  delete(id: string) {
+  async delete(id: string): Promise<ApiSuccess | ApiError> {
 
     const index = this.consulIndex(id);
 
     if (index >= ZERO) {
-      return this.users.splice(index, 1);
+      return new ApiSuccess(id, DELETED_USER);
     }
-    return Error0002;
+    return new ApiError(CODE_003, UNREGISTERED_USER);
   }
 
-  consultAll(): UserEntity[] {
+  // TODO: Reformular ou remover esse método para trazer apenas informações necessárias
+  async consultAll(): Promise<UserEntity[]> {
     return this.users;
   }
 

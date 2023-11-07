@@ -1,6 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
-import { ErrorObject } from './../models/error-object';
+import { ApiError } from "../models/api-error";
+import { ApiSuccess } from "../models/api-success";
 import { CreateUserDTO } from "./dto/create-user.dto";
+import { UpdateUserDTO } from "./dto/update-user.dto";
+import { UserEntity } from "./models/user.entity";
 import { UserService } from "./user.service";
 
 @Controller('/user')
@@ -11,27 +14,27 @@ export class UserController {
   ) { }
 
   @Post()
-  create(@Body() request: CreateUserDTO): ErrorObject {
+  async create(@Body() request: CreateUserDTO): Promise<ApiSuccess> {
     return this.service.create(request);
   }
 
   @Get('/:id')
-  consult(@Param('id') id: string): CreateUserDTO | ErrorObject {
+  async consult(@Param('id') id: string): Promise<UserEntity | ApiError> {
     return this.service.consult(id);
   }
 
   @Patch('/:id')
-  update(@Param('id') id: string, @Body() request: CreateUserDTO) {
+  async update(@Param('id') id: string, @Body() request: UpdateUserDTO): Promise<ApiSuccess | ApiError> {
     return this.service.update(id, request);
   }
 
   @Delete('/:id')
-  delete(@Param('id') id: string) {
+  async delete(@Param('id') id: string):Promise<ApiSuccess | ApiError> {
     return this.service.delete(id);
   }
 
   @Get('')
-  consultAll() {
+  async consultAll(): Promise<UserEntity[]> {
     return this.service.consultAll();
   }
 }
